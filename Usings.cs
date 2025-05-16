@@ -1,0 +1,11 @@
+﻿global using Cash_Flow_Management.Interfaces;
+global using Cash_Flow_Management.Models;
+global using Cash_Flow_Management.Services;
+global using Cash_Flow_Management.ViewModels;
+global using Cash_Flow_Management.Views;
+global using CommunityToolkit.Mvvm.Input;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;
+global using System.Collections.ObjectModel;
+global using System.Windows;
+global using System.Windows.Input;
