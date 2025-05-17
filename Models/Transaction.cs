@@ -2,8 +2,8 @@
 
 public record Transaction
 {
-	DateTime Date { get; set; }
-	decimal Amount { get; set; }
-	Category Category { get; set; }
-	string? Description { get; set; }
+	public DateTime Date { get; set; }
+	public decimal Amount { get; set; }
+	public Category Category { get; set; }
+	public string? Description { get; set; }
 }

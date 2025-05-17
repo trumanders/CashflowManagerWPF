@@ -1,9 +1,17 @@
-﻿using Cash_Flow_Management.Models;
+﻿namespace Cash_Flow_Management;
 
-namespace Cash_Flow_Management;
-
-public class TransactionService
+public class TransactionService : ITransactionService
 {
-	List<Transaction> _transactions = [];
-	Dictionary<DateTime, List<Transaction>> _monthlyTransactions;
+	public ObservableCollection<Transaction> Transactions { get; set; } = [];
+
+	public Dictionary<DateTime, List<Transaction>> _monthlyTransactions;
+	public Action? TransactionAdded { get; set; }
+	public void AddTransaction(Transaction transaction)
+	{
+		if (transaction != null)
+		{
+			Transactions.Add(transaction);
+			TransactionAdded?.Invoke();
+		}
+	}
 }

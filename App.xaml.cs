@@ -17,6 +17,7 @@ public partial class App : Application
 				services.AddSingleton<MainWindowViewModel>();
 				services.AddSingleton<ICategoryService, CategoryService>();
 				services.AddSingleton<IWindowService, WindowService>();
+				services.AddSingleton<ITransactionService, TransactionService>();
 			})
 			.Build();
 	}
