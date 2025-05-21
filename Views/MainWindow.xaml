@@ -18,6 +18,7 @@
 				<PropertyGroupDescription PropertyName="Type" />
 			</CollectionViewSource.GroupDescriptions>
 		</CollectionViewSource>
+
 	</Window.Resources>
 
 	<Grid Margin="10">
@@ -104,7 +105,7 @@
 			AutoGenerateColumns="False"
 			CanUserAddRows="False"
 			IsReadOnly="True"
-			ItemsSource="{Binding Transactions}">
+			ItemsSource="{Binding FilteredTransactions}">
 			<DataGrid.Columns>
 				<DataGridTextColumn
 					Width="*"
@@ -129,7 +130,7 @@
 			</DataGrid.Columns>
 		</DataGrid>
 
-		<!--  Monthly Summary  -->
+		<!--  Summary  -->
 		<StackPanel
 			Grid.Row="2"
 			Margin="0,10,0,0"
@@ -149,6 +150,24 @@
 				Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
 			<TextBlock FontWeight="Bold" Text="Net Cash-Flow: " />
 			<TextBlock Width="60" Text="{Binding TotalCashFlow, Mode=OneWay}" />
+
+			<!--  Select year to display  -->
+			<TextBlock Text="Filter by year:" />
+			<ComboBox
+				Width="80"
+				Margin="7,0,7,0"
+				ItemsSource="{Binding FilterByAvailableYearsInTransactions, Mode=OneWay}"
+				SelectedItem="{Binding SelectedYearFilter, Mode=TwoWay}" />
+
+			<!--  Select month to display  -->
+			<TextBlock Text="Filter by month:" />
+			<ComboBox
+				Width="80"
+				Margin="7,0,7,0"
+				ItemsSource="{Binding FilterByMonthsInSelectedYearFilter, Mode=OneWay}"
+				SelectedItem="{Binding SelectedMonth, Mode=TwoWay}" />
+
+			<Button Command="{Binding ClearFiltersCommand}" Content="Clear filters" />
 		</StackPanel>
 	</Grid>
 </Window>

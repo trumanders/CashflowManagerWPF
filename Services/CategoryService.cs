@@ -40,5 +40,9 @@ public class CategoryService : ICategoryService
 		AddCategory(new Category { Name = "Electricity", Type = CategoryType.Expense });
 		AddCategory(new Category { Name = "Phone", Type = CategoryType.Expense });
 		AddCategory(new Category { Name = "Child allowance", Type = CategoryType.Revenue });
+		AddCategory(new Category { Name = "Gifts", Type = CategoryType.Expense });
+		AddCategory(new Category { Name = "Entertainment", Type = CategoryType.Expense });
+		AddCategory(new Category { Name = "Outdoor", Type = CategoryType.Expense });
+		AddCategory(new Category { Name = "Clothing", Type = CategoryType.Expense });
 	}
 }

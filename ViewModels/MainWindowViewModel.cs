@@ -1,8 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections;
-using System.ComponentModel;
-
-namespace Cash_Flow_Management.ViewModels;
+﻿namespace Cash_Flow_Management.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
 {
@@ -18,19 +14,75 @@ public partial class MainWindowViewModel : ObservableObject, INotifyPropertyChan
 	private string? _description;
 	[ObservableProperty]
 	private Category? _category;
-	[ObservableProperty]
-	public decimal? _totalRevenues;
-	[ObservableProperty]
-	public decimal? _totalExpenses;
-	[ObservableProperty]
-	public decimal? _totalCashFlow;
 
-	public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+	public decimal? TotalRevenues => FilteredTransactions
+		.Where(x => x.Category.Type == CategoryType.Revenue)
+		.Sum(x => x.Amount);
 
+	public decimal? TotalExpenses => FilteredTransactions
+		.Where(x => x.Category.Type == CategoryType.Expense)
+		.Sum(x => x.Amount);
+
+	public decimal? TotalCashFlow => TotalRevenues - TotalExpenses;
+
+	private string? _selectedMonth;
+	public string? SelectedMonth
+	{
+		get => _selectedMonth;
+		set
+		{
+			if (_selectedMonth != value)
+			{
+				_selectedMonth = value;
+				UpdateUI();
+			}
+		}
+	}
+
+	private string? _selectedYearFilter;
+	public string? SelectedYearFilter
+	{
+		get => _selectedYearFilter;
+		set
+		{
+			if (_selectedYearFilter != value)
+			{
+				_selectedYearFilter = value;
+				UpdateUI();
+
+			}
+		}
+	}
+	public IEnumerable<Transaction> FilteredTransactions
+	{
+		get => Transactions
+			.Where(x => (string.IsNullOrEmpty(SelectedYearFilter) || x.Date.Year.ToString() == SelectedYearFilter) &&
+						(string.IsNullOrEmpty(SelectedMonth) || x.Date.ToString("MMMM", CultureInfo.InvariantCulture) == SelectedMonth));
+	}
+	
 	public ObservableCollection<Category> Categories { get; set; } = [];
 	public ObservableCollection<Transaction> Transactions => _transactionService.Transactions;
+
+	public ObservableCollection<string> FilterByAvailableYearsInTransactions =>
+		[
+			..Transactions
+			.Select(x => x.Date.Year.ToString())
+			.Distinct()
+		];
+
+	public ObservableCollection<string> FilterByMonthsInSelectedYearFilter =>
+		[
+			.. Transactions
+			.Where(x => string.IsNullOrEmpty(SelectedYearFilter) || x.Date.Year.ToString() == SelectedYearFilter)
+			.Select(x => x.Date.ToString("MMMM", CultureInfo.InvariantCulture))
+			.Distinct()
+		];
+
+
+
 	public ICommand AddTransactionCommand { get; set; }
 	public ICommand AddCategoryCommand { get; set; }
+	public ICommand ClearFiltersCommand { get; set; }
 
 	public MainWindowViewModel(ICategoryService categoryService, IWindowService windowService, ITransactionService transactionService)
 	{
@@ -38,7 +90,9 @@ public partial class MainWindowViewModel : ObservableObject, INotifyPropertyChan
 		_windowService = windowService;
 		_transactionService = transactionService;
 		SubscribeToEvents();
+		_transactionService.AddTestData();
 		PopulateCategoriesWithGeneratedTestData();
+
 		InitializeCommands();
 	}
 
@@ -46,6 +100,7 @@ public partial class MainWindowViewModel : ObservableObject, INotifyPropertyChan
 	{
 		AddTransactionCommand = new RelayCommand(AddTransaction_Click);
 		AddCategoryCommand = new RelayCommand(AddCategory_Click);
+		ClearFiltersCommand = new RelayCommand(ClearFilter_Click);
 	}
 
 	private void AddTransaction_Click()
@@ -55,7 +110,7 @@ public partial class MainWindowViewModel : ObservableObject, INotifyPropertyChan
 			MessageBox.Show("Please enter all fields to add transaction.", "Input error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 			return;
 		}
-		
+
 		if (ValidateInputs())
 		{
 			_transactionService.AddTransaction(new Transaction()
@@ -65,8 +120,8 @@ public partial class MainWindowViewModel : ObservableObject, INotifyPropertyChan
 				Description = Description,
 				Category = Category!
 			});
+			UpdateUI();	
 		}
-
 	}
 
 	private void AddCategory_Click()
@@ -84,7 +139,6 @@ public partial class MainWindowViewModel : ObservableObject, INotifyPropertyChan
 	{
 		_categoryService.CategoryAdded += OnAddCategory;
 		_categoryService.CategoryRemoved += OnRemoveCategory;
-		_transactionService.TransactionAdded += OnTransactionAdded;
 	}
 
 	private void OnAddCategory(Category category)
@@ -131,21 +185,26 @@ public partial class MainWindowViewModel : ObservableObject, INotifyPropertyChan
 		return true;
 	}
 
-	private void OnTransactionAdded()
+
+	private void ClearFilter_Click()
 	{
-		TotalExpenses = Transactions
-			.Where(x => x.Category.Type == CategoryType.Expense)
-			.Sum(x => x.Amount);
-
-		TotalRevenues = Transactions
-			.Where(x => x.Category.Type == CategoryType.Revenue)
-			.Sum(x => x.Amount);
-
-		TotalCashFlow = TotalRevenues - TotalExpenses;
+		SelectedMonth = null;
+		SelectedYearFilter = null;
+		UpdateUI();
 	}
 
-	public IEnumerable GetErrors(string? propertyName)
+	private void UpdateUI()
 	{
-		throw new NotImplementedException();
+		OnPropertyChanged(nameof(FilteredTransactions));
+
+		OnPropertyChanged(nameof(FilterByAvailableYearsInTransactions));
+		OnPropertyChanged(nameof(FilterByMonthsInSelectedYearFilter));
+
+		OnPropertyChanged(nameof(SelectedYearFilter));
+		OnPropertyChanged(nameof(SelectedMonth));
+		
+		OnPropertyChanged(nameof(TotalRevenues));
+		OnPropertyChanged(nameof(TotalExpenses));
+		OnPropertyChanged(nameof(TotalCashFlow));
 	}
 }

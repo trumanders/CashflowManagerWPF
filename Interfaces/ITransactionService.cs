@@ -7,4 +7,5 @@ public interface ITransactionService
 	public Action? TransactionAdded { get; set; }
 
 	public void AddTransaction(Transaction transaction);
+	public void AddTestData();
 }
