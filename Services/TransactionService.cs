@@ -5,18 +5,21 @@ public class TransactionService : ITransactionService
 	private CategoryService categoryService = new CategoryService();
 	public ObservableCollection<Transaction> Transactions { get; set; } = [];
 
-	public Dictionary<DateTime, List<Transaction>> _monthlyTransactions;
-	public Action? TransactionAdded { get; set; }
-	
+	/// <summary>
+	/// Adds the passed in transaction to the transaction collection.
+	/// </summary>
+	/// <param name="transaction"></param>
 	public void AddTransaction(Transaction transaction)
 	{
 		if (transaction != null)
 		{
 			Transactions.Add(transaction);
-			TransactionAdded?.Invoke();
 		}
 	}
 
+	/// <summary>
+	/// Adds transaction test data to load at startup.
+	/// </summary>
 	public void AddTestData()
 	{
 		foreach (var transaction in new List<Transaction>()

@@ -165,7 +165,7 @@
 				Width="80"
 				Margin="7,0,7,0"
 				ItemsSource="{Binding FilterByMonthsInSelectedYearFilter, Mode=OneWay}"
-				SelectedItem="{Binding SelectedMonth, Mode=TwoWay}" />
+				SelectedItem="{Binding SelectedMonthFilter, Mode=TwoWay}" />
 
 			<Button Command="{Binding ClearFiltersCommand}" Content="Clear filters" />
 		</StackPanel>

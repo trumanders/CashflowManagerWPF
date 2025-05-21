@@ -1,5 +1,4 @@
-﻿
-namespace Cash_Flow_Management;
+﻿namespace Cash_Flow_Management;
 
 /// <summary>
 /// Interaction logic for App.xaml
@@ -11,7 +10,7 @@ public partial class App : Application
 	public App()
 	{
 		AppHost = Host.CreateDefaultBuilder()
-			.ConfigureServices((hostContext, services) =>
+			.ConfigureServices((services) =>
 			{
 				services.AddSingleton<MainWindow>();
 				services.AddSingleton<MainWindowViewModel>();

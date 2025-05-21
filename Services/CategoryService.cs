@@ -11,6 +11,10 @@ public class CategoryService : ICategoryService
 		AddCategoryTestData();
 	}
 
+	/// <summary>
+	/// Adds the passed in category to the hash set of categories
+	/// </summary>
+	/// <param name="category">The Category instance to add.</param>
 	public void AddCategory(Category category)
 	{
 		if (category != null)
@@ -23,6 +27,10 @@ public class CategoryService : ICategoryService
 		}
 	}
 
+	/// <summary>
+	/// Removes the passed in category from the hash set of categories
+	/// </summary>
+	/// <param name="category">The Category instance to remove.</param>
 	public void RemoveCategory(Category category)
 	{
 		if (category != null)
@@ -32,6 +40,9 @@ public class CategoryService : ICategoryService
 		}
 	}
 
+	/// <summary>
+	/// Adds category test data to the collection
+	/// </summary>
 	private void AddCategoryTestData()
 	{
 		AddCategory(new Category { Name = "Food", Type = CategoryType.Expense });
