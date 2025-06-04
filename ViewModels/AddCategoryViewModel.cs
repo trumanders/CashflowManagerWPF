@@ -15,9 +15,6 @@ public class AddCategoryViewModel
 		InitializeCommands();
 	}
 
-	/// <summary>
-	/// Handles the Ok-button click. Passes true to the WindowService close-method.
-	/// </summary>
 	private void Ok_Click()
 	{
 		Result.Name = CategoryName;
@@ -25,17 +22,11 @@ public class AddCategoryViewModel
 		_windowService.CloseWithResult(true);
 	}
 
-	/// <summary>
-	/// Handles the Cancel-button click. Passes false to the WindowService close-method
-	/// </summary>
 	private void Cancel_Click()
 	{
 		_windowService.CloseWithResult(false);
 	}
 
-	/// <summary>
-	/// Initializes the commands
-	/// </summary>
 	private void InitializeCommands()
 	{
 		OkClickedCommand = new RelayCommand(Ok_Click);

@@ -156,7 +156,7 @@
 			<ComboBox
 				Width="80"
 				Margin="7,0,7,0"
-				ItemsSource="{Binding FilterByAvailableYearsInTransactions, Mode=OneWay}"
+				ItemsSource="{Binding AvailableYearsInTransactionsToFilterBy, Mode=OneWay}"
 				SelectedItem="{Binding SelectedYearFilter, Mode=TwoWay}" />
 
 			<!--  Select month to display  -->
@@ -164,7 +164,7 @@
 			<ComboBox
 				Width="80"
 				Margin="7,0,7,0"
-				ItemsSource="{Binding FilterByMonthsInSelectedYearFilter, Mode=OneWay}"
+				ItemsSource="{Binding AvailableMonthsInSelectedYear, Mode=OneWay}"
 				SelectedItem="{Binding SelectedMonthFilter, Mode=TwoWay}" />
 
 			<Button Command="{Binding ClearFiltersCommand}" Content="Clear filters" />

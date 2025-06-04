@@ -1,8 +1,5 @@
 ﻿namespace Cash_Flow_Management;
 
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
 public partial class App : Application
 {
 	public static IHost? AppHost { get; private set; }

@@ -5,10 +5,6 @@ public class TransactionService : ITransactionService
 	private CategoryService categoryService = new CategoryService();
 	public ObservableCollection<Transaction> Transactions { get; set; } = [];
 
-	/// <summary>
-	/// Adds the passed in transaction to the transaction collection.
-	/// </summary>
-	/// <param name="transaction"></param>
 	public void AddTransaction(Transaction transaction)
 	{
 		if (transaction != null)
@@ -17,9 +13,6 @@ public class TransactionService : ITransactionService
 		}
 	}
 
-	/// <summary>
-	/// Adds transaction test data to load at startup.
-	/// </summary>
 	public void AddTestData()
 	{
 		foreach (var transaction in new List<Transaction>()
